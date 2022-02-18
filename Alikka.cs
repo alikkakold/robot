@@ -54,7 +54,7 @@ namespace ETSBots.ETSBots.CandleFormations
 					if (LongPos.Count == 0 && ShortPos.Count == 0)
                     {
 						if (Reopening)
-						BuyGreater(bar + 1, priceDown[bar + 1] - Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_First_Position.Value,
+						BuyAtLimit (bar + 1, priceDown[bar + 1] - Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_First_Position.Value,
                             "Open 1");
                         BuyGreater(bar + 1, priceDown[bar + 1] - Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_Second_Position.Value,
                             "Open 2");
