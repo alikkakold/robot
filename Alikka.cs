@@ -88,7 +88,7 @@ namespace ETSBots.ETSBots.CandleFormations
 								SellAtProfit(bar + 1, item, item.EntryPrice + Profit.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 1 по профиту");
 								else
 			
-								SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 2 по пересечению");
+								SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 1 по пересечению");
 							}					
 							if (item.EntryNameSignal == "Вход в лонг позицию 2")
 							{
