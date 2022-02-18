@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -14,7 +14,7 @@ using SourceEts.Models;
 
 namespace ETSBots.ETSBots.CandleFormations
 {
-    public class HangingMan : Script
+    public class Alikka_Strategy : Script
     {	
 
 		public CreateInidicator Bb = new CreateInidicator(EnumIndicators.BollinderBands, 0, "");
@@ -38,45 +38,39 @@ namespace ETSBots.ETSBots.CandleFormations
                     var priceUp = Bb.param.LinesIndicators[1].PriceSeries;
                     var priceDown = Bb.param.LinesIndicators[2].PriceSeries;
 
-
-
 					if (LongPos.Count == 0 && ShortPos.Count == 0)
                     {
-						if (Reopening) {
-						ShortLess(bar + 1, priceUp[bar + 1] + Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_First_Position.Value,
-                            "Open 1");
-							AddLogRobot("Open 1");
-						}
-                        ShortLess(bar + 1, priceUp[bar + 1] + Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_Second_Position.Value,
-                            "Open 2");
-						AddLogRobot("Open 2");
+						if (Reopening)
+						ShortAtLimit(bar + 1, priceUp[bar + 1] + Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_First_Position.Value,
+                            "Вход в шорт позицию 1");
+                        ShortAtLimit(bar + 1, priceUp[bar + 1] + Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_Second_Position.Value,
+                            "Вход в шорт позицию 2");
                     } 
 					if (LongPos.Count == 0 && ShortPos.Count == 0)
                     {
 						if (Reopening)
 						BuyAtLimit(bar + 1, priceDown[bar + 1] - Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_First_Position.Value,
-                            "Open 1");
+                            "Вход в лонг позицию 1");
                         BuyAtLimit(bar + 1, priceDown[bar + 1] - Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_Second_Position.Value,
-                            "Open 2");
-                    }
-
-            
+                            "Вход в лонг позицию 2");
+					}
+					
 					if (ShortPos.Count > 0)
                     {
 					for (int i = ShortPos.Count - 1; i >= 0; i--)
 						{
 							var item = ShortPos[i];
-							if (item.EntryNameSignal == "Open 1")
+							if (item.EntryNameSignal == "Вход в шорт позицию 1")
 							{
 								if ((item.EntryPrice - Profit.ValueInt) > (priceDown[bar + 1] - Otstup_Close.ValueInt))									
-									CoverAtStop(bar + 1, item, item.EntryPrice - Profit.ValueInt * FinInfo.Security.MinStep, "Профит");
+									CoverAtStop(bar + 1, item, item.EntryPrice - Profit.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 1 по профиту");
 								else
-									SellAtProfit(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Пересечение");
+									CoverAtStop(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 1 по пересечению");
 								
 							}					
-							if (item.EntryNameSignal == "Open 2")
+							if (item.EntryNameSignal == "Вход в шорт позицию 2")
 							{
-								SellAtProfit(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Пересечение");
+								CoverAtStop(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 2 по пересечению");
 								Reopening = !Reopening;
 							}
 						}
@@ -87,18 +81,18 @@ namespace ETSBots.ETSBots.CandleFormations
 					for (int i = LongPos.Count - 1; i >= 0; i--)
 						{
 							var item = LongPos[i];
-							if (item.EntryNameSignal == "Open 1")
+							if (item.EntryNameSignal == "Вход в лонг позицию 1")
 							{
 								if ((item.EntryPrice + Profit.ValueInt) < (priceUp[bar + 1] + Otstup_Close.ValueInt))
 				
-								SellAtProfit(bar + 1, item, item.EntryPrice + Profit.ValueInt * FinInfo.Security.MinStep, "Профит");
+								SellAtProfit(bar + 1, item, item.EntryPrice + Profit.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 1 по профиту");
 								else
 			
-								SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Пересечение");
+								SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 2 по пересечению");
 							}					
-							if (item.EntryNameSignal == "Open 2")
+							if (item.EntryNameSignal == "Вход в лонг позицию 2")
 							{
-								SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Пересечение");	
+								SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 2 по пересечению");	
 								Reopening = !Reopening;
 							}
 						}
@@ -128,14 +122,14 @@ namespace ETSBots.ETSBots.CandleFormations
 
         public override void GetAttributesStratetgy()
         {
-            DesParamStratetgy.Version = "1.0";
-            DesParamStratetgy.DateRelease = "16.01.2022";
-            DesParamStratetgy.DateChange = "16.01.2022";
-            DesParamStratetgy.Author = "РобоКоммерц";
+            DesParamStratetgy.Version = "1.0.0.0";
+            DesParamStratetgy.DateRelease = "18.02.2022";
+            DesParamStratetgy.DateChange = "18.02.2022";
+            DesParamStratetgy.Author = "Alikka";
 
-            DesParamStratetgy.Description = "dasa";
+            DesParamStratetgy.Description = "Alikka's Top Strategy profit 9000%" ;
             DesParamStratetgy.Change = "";
-            DesParamStratetgy.NameStrategy = "Alikka";
+            DesParamStratetgy.NameStrategy = "Alikka_Strategy";
         }
     }
 }
