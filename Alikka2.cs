@@ -1,4 +1,4 @@
-﻿using ScriptSolution;
+using ScriptSolution;
 using ScriptSolution.Indicators;
 using ScriptSolution.Model;
 using System;
@@ -48,14 +48,14 @@ namespace Scanner
                         {
                             if (LongPos[i].EntryNameSignal.Equals("Вход в лонг позицию 2"))
                             {
-                                SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Закрытие лонг позиции 2");
+                                SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Выход из лонг позиции 2");
 
                                 continue;
                             }
                             if (LongPos[i].EntryNameSignal.Equals("Вход в лонг позицию 1"))
                             {
-                                SellAtProfit(bar + 1, LongPos[i], LongPos[i].EntryPrice + Profit.Value, "Закрытие лонг позиции 1");
-                                SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Закрытие лонг позиции 1");
+                                SellAtProfit(bar + 1, LongPos[i], LongPos[i].EntryPrice + Profit.Value, "Выход из лонг позиции 1");
+                                SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Выход из лонг позиции 1");
 
                                 BuyAtLimit(bar + 1, priceDown[bar] - Otstup_Open.Value, Volume_First_Position.Value, "Вход в лонг позицию 1");
 
@@ -69,14 +69,14 @@ namespace Scanner
                         {
                             if (ShortPos[i].EntryNameSignal.Equals("Вход в шорт позицию 2"))
                             {
-                                CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Закрытие шорт позиции 2");
+                                CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Выход из шорт позиции 2");
                                 continue;
                             }
 
                             if (ShortPos[i].EntryNameSignal.Equals("Вход в шорт позицию 1"))
                             {
-                                CoverAtProfit(bar + 1, ShortPos[i], ShortPos[i].EntryPrice - Profit.Value, "Закрытие шорт позиции 1");
-                                CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Закрытие шорт позиции 1");
+                                CoverAtProfit(bar + 1, ShortPos[i], ShortPos[i].EntryPrice - Profit.Value, "Выход из шорт позиции 1");
+                                CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Выход из шорт позиции 1");
 
                                 ShortAtLimit(bar + 1, priceUp[bar] + Otstup_Open.Value, Volume_First_Position.Value, "Вход в шорт позицию 1");
 
