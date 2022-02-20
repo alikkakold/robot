@@ -27,8 +27,6 @@ namespace ETSBots.ETSBots.CandleFormations
 		public ParamOptimization Otstup_Open = new ParamOptimization(1, 1, 500, 1, "Otstup_Open", "Отступ от линии боллинжера для входа в позицию");
         public ParamOptimization Otstup_Close = new ParamOptimization(1, 1, 500, 1, "Otstup_Close", "Отступ от линии боллинжера для выхода из позиции");
 		
-		public bool Reopening = true; 
-		
 		public override void Execute()
         {
             for (var bar = IndexBar; bar < CandleCount - 1; bar++)
@@ -37,18 +35,13 @@ namespace ETSBots.ETSBots.CandleFormations
                 {	
                     var priceUp = Bb.param.LinesIndicators[1].PriceSeries;
                     var priceDown = Bb.param.LinesIndicators[2].PriceSeries;
-
-					if (LongPos.Count == 0 && ShortPos.Count == 0)
+					
                     {
-						if (Reopening)
+					
 						ShortAtLimit(bar + 1, priceUp[bar + 1] + Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_First_Position.Value,
                             "Вход в шорт позицию 1");
                         ShortAtLimit(bar + 1, priceUp[bar + 1] + Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_Second_Position.Value,
                             "Вход в шорт позицию 2");
-                    } 
-					if (LongPos.Count == 0 && ShortPos.Count == 0)
-                    {
-						if (Reopening)
 						BuyAtLimit(bar + 1, priceDown[bar + 1] - Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_First_Position.Value,
                             "Вход в лонг позицию 1");
                         BuyAtLimit(bar + 1, priceDown[bar + 1] - Otstup_Open.ValueInt * FinInfo.Security.MinStep, Volume_Second_Position.Value,
@@ -61,17 +54,14 @@ namespace ETSBots.ETSBots.CandleFormations
 						{
 							var item = ShortPos[i];
 							if (item.EntryNameSignal == "Вход в шорт позицию 1")
-							{
-								if ((item.EntryPrice - Profit.ValueInt) > (priceDown[bar + 1] - Otstup_Close.ValueInt))									
-									CoverAtStop(bar + 1, item, item.EntryPrice - Profit.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 1 по профиту");
-								else
-									CoverAtStop(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 1 по пересечению");
-								
+							{					
+									CoverAtProfit(bar + 1, item, item.EntryPrice - Profit.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 1 по профиту");
+									CoverAtProfit(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 1 по пересечению");
 							}					
 							if (item.EntryNameSignal == "Вход в шорт позицию 2")
 							{
-								CoverAtStop(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 2 по пересечению");
-								Reopening = !Reopening;
+								CoverAtProfit(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из шорт позиции 2 по пересечению");
+								
 							}
 						}
 
@@ -83,17 +73,13 @@ namespace ETSBots.ETSBots.CandleFormations
 							var item = LongPos[i];
 							if (item.EntryNameSignal == "Вход в лонг позицию 1")
 							{
-								if ((item.EntryPrice + Profit.ValueInt) < (priceUp[bar + 1] + Otstup_Close.ValueInt))
-				
 								SellAtProfit(bar + 1, item, item.EntryPrice + Profit.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 1 по профиту");
-								else
-			
 								SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 1 по пересечению");
 							}					
 							if (item.EntryNameSignal == "Вход в лонг позицию 2")
 							{
 								SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Выход из лонг позиции 2 по пересечению");	
-								Reopening = !Reopening;
+								
 							}
 						}
 					}
@@ -127,7 +113,7 @@ namespace ETSBots.ETSBots.CandleFormations
             DesParamStratetgy.DateChange = "18.02.2022";
             DesParamStratetgy.Author = "Alikka";
 
-            DesParamStratetgy.Description = "Alikka's Top Strategy profit 9000%" ;
+            DesParamStratetgy.Description = "" ;
             DesParamStratetgy.Change = "";
             DesParamStratetgy.NameStrategy = "Alikka_Strategy";
         }
