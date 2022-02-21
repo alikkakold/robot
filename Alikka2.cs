@@ -64,6 +64,7 @@ namespace ETSBots.ETSBots.CandleFormations
                             if (LongPos[i].EntryNameSignal.Equals("Повторный вход в лонг позицию 1"))
                             {
                                 SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Повторный выход из лонг позиции 1");
+                                continue;
                             }
                         }
                     }
@@ -89,7 +90,7 @@ namespace ETSBots.ETSBots.CandleFormations
                             if (ShortPos[i].EntryNameSignal.Equals("Повторный вход в шорт позицию 1"))
 							{
 								CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Повторный выход из шорт позиции 1");
-								
+								continue;
 							}
                         }
                     }
