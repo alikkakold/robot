@@ -63,7 +63,7 @@ namespace ETSBots.ETSBots.CandleFormations
                             }
                             if (LongPos[i].EntryNameSignal.Equals("Повторный вход в лонг"))
                             {
-                                SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Повторный выход из лонг");
+                                SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Повторный выход из лонг");
                             }
                         }
                     }
@@ -88,7 +88,7 @@ namespace ETSBots.ETSBots.CandleFormations
                             }
                             if (ShortPos[i].EntryNameSignal.Equals("Повторный вход в шорт"))
 							{
-								CoverAtProfit(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Повторный выход из шорт");
+								CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Повторный выход из шорт");
 								
 							}
                         }
