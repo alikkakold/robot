@@ -57,13 +57,13 @@ namespace ETSBots.ETSBots.CandleFormations
                                 SellAtProfit(bar + 1, LongPos[i], LongPos[i].EntryPrice + Profit.Value, "Выход из лонг позиции 1");
                                 SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Выход из лонг позиции 1");
 
-                                BuyAtLimit(bar + 1, priceDown[bar] - Otstup_Open.Value, Volume_First_Position.Value, "Порторный вход в лонг позицию 1");
+                                BuyAtLimit(bar + 1, priceDown[bar] - Otstup_Open.Value, Volume_First_Position.Value, "Повторный вход в лонг позицию 1");
 
                                 continue;
                             }
-                            if (LongPos[i].EntryNameSignal.Equals("Повторный вход в лонг"))
+                            if (LongPos[i].EntryNameSignal.Equals("Повторный вход в лонг позицию 1"))
                             {
-                                SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Повторный выход из лонг");
+                                SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Повторный выход из лонг позиции 1");
                             }
                         }
                     }
@@ -86,9 +86,9 @@ namespace ETSBots.ETSBots.CandleFormations
 
                                 continue;
                             }
-                            if (ShortPos[i].EntryNameSignal.Equals("Повторный вход в шорт"))
+                            if (ShortPos[i].EntryNameSignal.Equals("Повторный вход в шорт позицию 1"))
 							{
-								CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Повторный выход из шорт");
+								CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Повторный выход из шорт позиции 1");
 								
 							}
                         }
