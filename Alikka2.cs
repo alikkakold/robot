@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scanner
+namespace ETSBots.ETSBots.CandleFormations
 {
     internal class Alikka : Script
     {
@@ -57,9 +57,13 @@ namespace Scanner
                                 SellAtProfit(bar + 1, LongPos[i], LongPos[i].EntryPrice + Profit.Value, "Выход из лонг позиции 1");
                                 SellAtProfit(bar + 1, LongPos[i], priceUp[bar] + Otstup_Close.Value, "Выход из лонг позиции 1");
 
-                                BuyAtLimit(bar + 1, priceDown[bar] - Otstup_Open.Value, Volume_First_Position.Value, "Вход в лонг позицию 1");
+                                BuyAtLimit(bar + 1, priceDown[bar] - Otstup_Open.Value, Volume_First_Position.Value, "Порторный вход в лонг позицию 1");
 
                                 continue;
+                            }
+                            if (LongPos[i].EntryNameSignal.Equals("Повторный вход в лонг"))
+                            {
+                                SellAtProfit(bar + 1, item, priceUp[bar + 1] + Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Повторный выход из лонг");
                             }
                         }
                     }
@@ -78,10 +82,15 @@ namespace Scanner
                                 CoverAtProfit(bar + 1, ShortPos[i], ShortPos[i].EntryPrice - Profit.Value, "Выход из шорт позиции 1");
                                 CoverAtProfit(bar + 1, ShortPos[i], priceDown[bar] - Otstup_Close.Value, "Выход из шорт позиции 1");
 
-                                ShortAtLimit(bar + 1, priceUp[bar] + Otstup_Open.Value, Volume_First_Position.Value, "Вход в шорт позицию 1");
+                                ShortAtLimit(bar + 1, priceUp[bar] + Otstup_Open.Value, Volume_First_Position.Value, "Повторный вход в шорт позицию 1");
 
                                 continue;
                             }
+                            if (ShortPos[i].EntryNameSignal.Equals("Повторный вход в шорт"))
+							{
+								CoverAtProfit(bar + 1, item, priceDown[bar + 1] - Otstup_Close.ValueInt * FinInfo.Security.MinStep, "Повторный выход из шорт");
+								
+							}
                         }
                     }
                 }
